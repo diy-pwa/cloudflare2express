@@ -2,6 +2,7 @@ import express from 'express';
 import {onRequest as corsproxy} from '../functions/corsproxy/[[corsproxy]].js';
 import {onRequest as hello2} from '../functions/hello/[[hello]].js';
 import hello from '../workers/hello.js';
+import email from '../workers/sendgrid.js';
 import functionsAdapter from './functionsAdapter.js';
 import workersAdapter from './workersAdapter.js';
 export default () => {
@@ -18,6 +19,9 @@ export default () => {
     })
     app.get("/", async (req, res) => {
         workersAdapter(hello, req, res);
+    });
+    app.get(/\/email.*/, async (req, res) =>{
+        workersAdapter(email, req, res);
     });
     return app;
 }
