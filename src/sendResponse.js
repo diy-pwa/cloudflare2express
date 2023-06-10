@@ -5,6 +5,7 @@ export default function(oResponse, res){
       headersHash[key] = value;
     }
     res.set(headersHash);
+    res.status(oResponse.statusCode);
     if (oResponse.body) {
         pipeline(oResponse.body, res);
     } else {

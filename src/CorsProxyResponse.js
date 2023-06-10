@@ -137,14 +137,4 @@ export default class {
         res.headers.set("Access-Control-Max-Age", "86400");
         return res;
     }
-    async getExpressResponse(req) {
-        req.headers = new Headers(req.headers);
-        req.url = this.url;
-        let oResponse = await this.getResponse(req);
-        oResponse.headersHash = {};
-        for (let [key, value] of oResponse.headers) {
-            oResponse.headersHash[key] = value;
-        }
-        return (oResponse);
-    }
 }
