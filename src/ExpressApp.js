@@ -17,7 +17,7 @@ export default () => {
         functionsAdapter(hello2, req, res);
     })
     app.get("/", async (req, res) => {
-        workersAdapter(hello.fetch, req, res);
+        workersAdapter(hello, req, res);
     });
     return app;
 }
