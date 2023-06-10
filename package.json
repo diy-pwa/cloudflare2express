@@ -6,8 +6,8 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.es.js",
-  "module": "./dist/index.es.js",
+  "main": "./dist/js/index.es.js",
+  "module": "./dist/js/index.es.js",
   "exports": {
     ".": {
       "import": "./dist/js/index.es.js"
