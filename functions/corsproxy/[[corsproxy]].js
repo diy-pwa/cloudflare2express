@@ -1,4 +1,4 @@
-import CorsProxyResponse from "../../src/CorsProxyResponse.js";
+import {CorsProxyResponse} from "@rhildred/cors-proxy2";
 
 export async function onRequest(context) {
     const apiUrl = context.request.url.replace(/^.*corsproxy/, "https:/");
