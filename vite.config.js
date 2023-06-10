@@ -10,6 +10,7 @@ export default defineConfig({
             entry: [
                 path.resolve(__dirname, 'src/lib/index.js')
             ],
+            formats: ['es'],
             fileName: (format, entryName) => {
                 return `js/${entryName}.${format}.js`;
             },
