@@ -1,5 +1,6 @@
 import path from 'path'
 import { defineConfig } from 'vite'
+import { builtinModules } from 'module';
 
 export default defineConfig({
     build: {
@@ -12,6 +13,9 @@ export default defineConfig({
             fileName: (format, entryName) => {
                 return `js/${entryName}.${format}.js`;
             },
-        }
+        },
+        rollupOptions: {
+            external: [...builtinModules, ...builtinModules.map((m) => `node:${m}`)],
+          }      
     }
 })
