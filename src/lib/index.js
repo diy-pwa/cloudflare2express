@@ -10,7 +10,7 @@ import worker2functionAdapter from "../worker2functionAdapter.js";
 async function readRequestBody(request) {
     const contentType = request.headers.get("content-type");
     if (contentType.includes("application/json")) {
-        return JSON.stringify(await request.json());
+        return await request.json();
     } else if (contentType.includes("application/text")) {
         return request.text();
     } else if (contentType.includes("text/html")) {

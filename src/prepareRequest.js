@@ -1,7 +1,8 @@
 export default function(req){
     req.headers = new Headers(req.headers);
     req.json = ()=>{
-        return JSON.parse(req.body);
+        const oBody = JSON.parse(req.body.toString());
+        return oBody;
     };
     return req;
 }

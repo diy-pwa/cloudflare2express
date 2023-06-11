@@ -16,6 +16,9 @@ describe("tests for sample express app", ()=>{
         .send({name: "Rich Hildred", email:"rhildred@gmail.com", message:"Hi there"})
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json');
+        if(res.status != 202){
+            console.log(res.body);
+        }
         expect(res.status).toBe(202);
     });
 })
