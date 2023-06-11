@@ -21,7 +21,7 @@ async function readRequestBody(request) {
         for (const entry of formData.entries()) {
             body[entry[0]] = entry[1];
         }
-        return JSON.stringify(body);
+        return body;
     } else {
         // Perhaps some other type of data was submitted in the form
         // like an image, or some other binary data.
