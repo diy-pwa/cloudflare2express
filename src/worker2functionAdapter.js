@@ -1,3 +1,3 @@
 export default function(worker, context){
-    return worker.fetch(context.request);
+    return worker.fetch(context.request, context.env);
 }
