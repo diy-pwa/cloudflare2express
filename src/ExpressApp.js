@@ -5,7 +5,7 @@ import hello from '../workers/hello.js';
 import email from '../workers/sendgrid.js';
 import functionsAdapter from './functionsAdapter.js';
 import workersAdapter from './workersAdapter.js';
-export default () => {
+export const createApp = () => {
     const app = express();
     app.all(/^\/.*corsproxy/, express.raw({
         inflate: true,
@@ -20,7 +20,7 @@ export default () => {
     app.get("/", async (req, res) => {
         workersAdapter(hello, req, res);
     });
-    app.get(/\/email.*/, async (req, res) =>{
+    app.post(/\/email.*/, async (req, res) =>{
         workersAdapter(email, req, res);
     });
     return app;

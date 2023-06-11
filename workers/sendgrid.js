@@ -1,10 +1,10 @@
-import { getRequestBody } from '../src/lib/index.js';
+import { readRequestBody } from '../src/lib/index.js';
 export default {
   async fetch(request) {
     if (request.method != "POST") {
       throw new Error("email must be post request");
     }
-    const dynamic_template_data = getRequestBody(request);
+    const dynamic_template_data = readRequestBody(request);
     const oBody = {
       'from': {
         'email': FROM,
