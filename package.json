@@ -1,6 +1,6 @@
 {
   "name": "cloudflare2express",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "an adapter for running a worker in a cloudflare pages function and for running either in express",
   "type": "module",
   "files": [
