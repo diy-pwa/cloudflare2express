@@ -41,7 +41,6 @@ export const createApp = () => {
 }
 
 ```
-Unfortunately I didn't get multipart form data working with the express adapter. The anticipated use for the express adapter is for running the debugger and supertest so I satisfied myself with this.
 to adapt a worker to a function:
 ```javascript
 import worker from '../../workers/hello.js';
@@ -51,3 +50,4 @@ export async function onRequest(context){
     return worker2functionAdapter(worker, context);
 }
 ```
+Unfortunately I didn't get multipart form data working with the express adapter. The anticipated use for the express adapter is for running the debugger and supertest so I satisfied myself with this.
