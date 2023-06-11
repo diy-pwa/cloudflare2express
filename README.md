@@ -1,5 +1,7 @@
 # cloudflare2express
-an adapter for running a worker in a cloudflare pages function and for running either in express
+## an adapter for running a worker in a cloudflare pages function and for running either in express
+
+This is so that you can run a cloudflare pages function or worker in the vscode debugger. There seem to be a lot more workers than pages functions so I thought it would also be helpful to run a worker as a pages function.
 
 ```javascript
 import express from 'express';
@@ -39,6 +41,7 @@ export const createApp = () => {
 }
 
 ```
+Unfortunately I didn't get multipart form data working with the express adapter. The anticipated use for the express adapter is for running the debugger and supertest so I satisfied myself with this.
 to adapt a worker to a function:
 ```javascript
 import worker from '../../workers/hello.js';
