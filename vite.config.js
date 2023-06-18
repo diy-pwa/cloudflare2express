@@ -3,6 +3,9 @@ import { defineConfig } from 'vite'
 import { builtinModules } from 'module';
 
 export default defineConfig({
+    test: {
+        exclude: "test2"
+    },
     build: {
         outDir: "./dist",
         lib: {

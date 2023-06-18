@@ -1,41 +1,68 @@
 # cloudflare2express
-## an adapter for running a worker in a cloudflare pages function and for running either in express
+## an adapter for running a worker or cloudflare pages function
 
-This is so that you can run a cloudflare pages function or worker in the vscode debugger. There seem to be a lot more workers than pages functions so I thought it would also be helpful to run a worker as a pages function.
+The original reason for this was to help someone debug my `@rhildred/cors-proxy2`. By the time I was done I had a test that worked like this with isomorphic-git, the original target for my cors proxy.
+
+```javascript
+import { describe, it, expect, beforeEach } from 'vitest';
+import createApp from '../src/ExpressApp.js';
+import git from 'isomorphic-git';
+import fs from 'fs';
+import http from 'isomorphic-git/http/web';
+
+describe("cloudflare cors-proxy for isomorphic git" ()=>{
+    it("handles an isomorphic git clone", async ()=>{
+        const app = createApp();
+        const server = await app.listen(8080);
+        await git.clone({
+            corsProxy: 'http://127.0.0.1:8080/thecorsproxy2',
+            url: 'https://github.com/diy-pwa/cloudflare2express',
+            ref: 'main',
+            singleBranch: true,
+            depth: 10,
+            dir: 'test2',
+            fs: fs,
+            http
+        });  
+        await server.close();
+        expect(true).toBe(true);
+    });
+});
+
+```
+
+I was so excited that I decided to share this is so that you can run a cloudflare pages function or worker in the vscode debugger or with supertest tests yourself. There seem to be a lot more workers than pages functions so I also included an example of running a worker as a pages function. You will need to make a test fixture like below (`src/ExpressApp.js`)
 
 ```javascript
 import express from 'express';
 import { onRequest as corsproxy } from '../functions/corsproxy/[[corsproxy]].js';
-import { onRequest as hello2 } from '../functions/hello/[[hello]].js';
 import hello from '../workers/hello.js';
-import email from '../workers/sendgrid.js';
-import functionsAdapter from 'cloudflare2express ';
-import workersAdapter from 'cloudflare2express ';
+import corsproxy2 from '../workers/corsproxy.js';
+import functionsAdapter from './functionsAdapter.js';
+import workersAdapter from './workersAdapter.js';
 import dotenv from 'dotenv';
+import fetch from 'node-fetch';
 
 dotenv.config();
 
-export const createApp = () => {
+export default () => {
     const app = express();
-    app.all(/^\/.*corsproxy/, express.raw({
+    app.all(/\/corsproxy.*/, express.raw({
         inflate: true,
         limit: '50mb',
         type: () => true, // this matches all content types for this route
     }), async (req, res) => {
-        functionsAdapter(corsproxy, req, res);
+        functionsAdapter(corsproxy, req, res, {url: req.url.replace(/^.*corsproxy/, "https:/"), fetch:fetch});
     });
-    app.get(/\/hello.*/, async (req, res) => {
-        functionsAdapter(hello2, req, res, env);
-    })
     app.get("/", async (req, res) => {
-        workersAdapter(hello, req, res, env);
+        workersAdapter(hello, req, res, {});
     });
-    app.post(/\/email.*/, express.raw({
+    app.all(/\/thecorsproxy2.*/, express.raw({
         inflate: true,
         limit: '50mb',
         type: () => true, // this matches all content types for this route
     }), async (req, res) => {
-        workersAdapter(email, req, res, { FROM: process.env["FROM"], TO: process.env["TO"], TEMPLATE: process.env["TEMPLATE"], ACCESS_TOKEN: process.env["ACCESS_TOKEN"] });
+        workersAdapter(corsproxy2, req, res, {url: req.url.replace(/^.*thecorsproxy2/, "https:/"), fetch:fetch});
     });
     return app;
 }
@@ -43,52 +70,12 @@ export const createApp = () => {
 ```
 to adapt a worker to a function:
 ```javascript
-import worker from '../../workers/hello.js';
-import { worker2functionAdapter} from 'cloudflare2express';
+import {CorsProxyResponse} from "@rhildred/cors-proxy2";
 
-export async function onRequest(context){
-    return worker2functionAdapter(worker, context);
+export async function onRequest(context) {
+    return await CorsProxyResponse.fetch(context.request, context.env);
 }
 ```
-This is a cloudflare worker to pass mail through the sendgrid api. My intention is to use it for my own project as a pages function for sending mail from a progressive web app.
-
-```javascript
-import { readRequestBody } from 'cloudflare2express';
-export default {
-  async fetch(request, env) {
-    if (request.method != "POST") {
-      throw new Error("email must be post request");
-    }
-    const dynamic_template_data = await readRequestBody(request);
-    const oBody = {
-      'from': {
-        'email': env.FROM,
-      },
-      'personalizations': [
-        {
-          'to': [
-            {
-              'email': env.TO,
-            },
-          ],
-          'dynamic_template_data': dynamic_template_data,
-        },
-      ],
-      'template_id': env.TEMPLATE,
-    };
-    const oHeaders = new Headers();
-    oHeaders.append('Authorization', `Bearer ${env.ACCESS_TOKEN}`);
-    oHeaders.append('Content-Type', 'application/json');
-
-    const email = await fetch('https://api.sendgrid.com/v3/mail/send', {
-      body: JSON.stringify(oBody),
-      headers: oHeaders,
-      method: 'POST',
-    });
-    return email;
-
-  }
-};
-
-```
 Unfortunately I didn't get multipart form data working with the express adapter. The anticipated use for the express adapter is for running the debugger and supertest so I satisfied myself with this.
+
+I hope that you also discover the joy of being able to write tests with your cloudflare workers and pages functions and debug them in vscode on your local machine. 

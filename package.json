@@ -1,6 +1,6 @@
 {
   "name": "cloudflare2express",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "an adapter for running a worker in a cloudflare pages function and for running either in express",
   "type": "module",
   "files": [
@@ -17,6 +17,7 @@
     "@rhildred/cors-proxy2": "^1.0.6",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
+    "isomorphic-git": "^1.24.2",
     "supertest": "^6.3.3",
     "vite": "^4.3.9",
     "vite-test": "^0.4.0",

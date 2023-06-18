@@ -1,35 +1,32 @@
 import express from 'express';
 import { onRequest as corsproxy } from '../functions/corsproxy/[[corsproxy]].js';
-import { onRequest as hello2 } from '../functions/hello/[[hello]].js';
 import hello from '../workers/hello.js';
-import email from '../workers/sendgrid.js';
+import corsproxy2 from '../workers/corsproxy.js';
 import functionsAdapter from './functionsAdapter.js';
 import workersAdapter from './workersAdapter.js';
 import dotenv from 'dotenv';
+import fetch from 'node-fetch';
 
 dotenv.config();
 
-export const createApp = () => {
+export default () => {
     const app = express();
-    app.all(/^\/.*corsproxy/, express.raw({
+    app.all(/\/corsproxy.*/, express.raw({
         inflate: true,
         limit: '50mb',
         type: () => true, // this matches all content types for this route
     }), async (req, res) => {
-        functionsAdapter(corsproxy, req, res);
+        functionsAdapter(corsproxy, req, res, {url: req.url.replace(/^.*corsproxy/, "https:/"), fetch:fetch});
     });
-    app.get(/\/hello.*/, async (req, res) => {
-        functionsAdapter(hello2, req, res, env);
-    })
     app.get("/", async (req, res) => {
-        workersAdapter(hello, req, res, env);
+        workersAdapter(hello, req, res, {});
     });
-    app.post(/\/email.*/, express.raw({
+    app.all(/\/thecorsproxy2.*/, express.raw({
         inflate: true,
         limit: '50mb',
         type: () => true, // this matches all content types for this route
     }), async (req, res) => {
-        workersAdapter(email, req, res, { FROM: process.env["FROM"], TO: process.env["TO"], TEMPLATE: process.env["TEMPLATE"], ACCESS_TOKEN: process.env["ACCESS_TOKEN"] });
+        workersAdapter(corsproxy2, req, res, {url: req.url.replace(/^.*thecorsproxy2/, "https:/"), fetch:fetch});
     });
     return app;
 }
