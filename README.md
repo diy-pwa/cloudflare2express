@@ -38,8 +38,7 @@ import express from 'express';
 import { onRequest as corsproxy } from '../functions/corsproxy/[[corsproxy]].js';
 import hello from '../workers/hello.js';
 import corsproxy2 from '../workers/corsproxy.js';
-import functionsAdapter from './functionsAdapter.js';
-import workersAdapter from './workersAdapter.js';
+import {functionsAdapter, workersAdapter} from 'cloudflare2express';
 import dotenv from 'dotenv';
 import fetch from 'node-fetch';
 
