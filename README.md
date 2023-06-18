@@ -31,7 +31,7 @@ describe("cloudflare cors-proxy for isomorphic git" ()=>{
 
 ```
 
-I was so excited that I decided to share this is so that you can run a cloudflare pages function or worker in the vscode debugger or with supertest tests yourself. There seem to be a lot more workers than pages functions so I also included an example of running a worker as a pages function. You will need to make a test fixture like below (`src/ExpressApp.js`)
+I was so excited that I decided to share this so that you can run a cloudflare pages function or worker in the vscode debugger or with supertest tests yourself. There seem to be a lot more workers than pages functions so I also included an example of running a worker as a pages function. You will need to make a test fixture like below (`src/ExpressApp.js`)
 
 ```javascript
 import express from 'express';
