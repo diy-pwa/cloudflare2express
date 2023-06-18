@@ -1,7 +1,7 @@
 # cloudflare2express
 ## an adapter for running a worker or cloudflare pages function in express
 
-The original reason for this was to help someone debug my `@rhildred/cors-proxy2`. By the time I was done I had a test that worked like this with isomorphic-git, the original target for my cors proxy.
+The original reason for this was to help @namdevel debug my `@rhildred/cors-proxy2`. By the time I was done I had a test that worked like this with isomorphic-git, the original target for my cors proxy.
 
 ```javascript
 import { describe, it, expect, beforeEach } from 'vitest';
