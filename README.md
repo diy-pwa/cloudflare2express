@@ -10,7 +10,7 @@ import git from 'isomorphic-git';
 import fs from 'fs';
 import http from 'isomorphic-git/http/web';
 
-describe("cloudflare cors-proxy for isomorphic git" ()=>{
+describe("cloudflare cors-proxy for isomorphic git", ()=>{
     it("handles an isomorphic git clone", async ()=>{
         const app = createApp();
         const server = await app.listen(8080);
