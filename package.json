@@ -1,6 +1,6 @@
 {
   "name": "cloudflare2express",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "an adapter for running a worker in a cloudflare pages function and for running either in express",
   "type": "module",
   "files": [
@@ -44,5 +44,5 @@
   "bugs": {
     "url": "https://github.com/diy-pwa/cloudflare2express/issues"
   },
-  "homepage": "https://github.com/diy-pwa/cloudflare2express#readme"
+  "homepage": "https://diy-pwa.github.io/cloudflare2express"
 }
