@@ -4,18 +4,18 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export default (glob, modules) => {
+export default (modules) => {
   const app = express();
-  const aGlob = glob.split('/');
   for (let key of Object.keys(modules)) {
     let aKeys = key.split('/');
-    for (let n = 0; n < aKeys.length; n++) {
-      if (aKeys[n] != aGlob[n]) {
-        aKeys = aKeys.slice(n);
+    let sRoute = "";
+    for (let n = aKeys.length - 1; n >= 0; n--) {
+      if (!aKeys[n].match(/\[{2}.*\]{2}/) ) {
+        sRoute = aKeys[n];
         break;
       }
     }
-    let sRoute = aKeys[0].replace('.js', '');
+    sRoute = sRoute.replace('.js', '');
     let route = new RegExp(`/${sRoute}.*`);
     app.all(
       route,

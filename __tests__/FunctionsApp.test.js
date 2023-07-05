@@ -13,7 +13,7 @@ describe('tests for sample express functions app', () => {
       import: 'onRequest',
       eager: true,
     });
-    const app = createApp('../functions/*/*.js', modules);
+    const app = createApp(modules);
     const res = await request(app).get(
       '/corsproxy/github.com/rhildred/DASH-to-HLS-Playback/archive/refs/heads/master.zip'
     );
