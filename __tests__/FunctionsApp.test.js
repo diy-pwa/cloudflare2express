@@ -9,7 +9,7 @@ beforeEach(async () => {
 
 describe('tests for sample express functions app', () => {
   it('handles a redirect', async () => {
-    const modules = import.meta.glob('../functions/*/*.js', {
+    const modules = import.meta.glob('../functions/**/*.js', {
       import: 'onRequest',
       eager: true,
     });
@@ -19,5 +19,16 @@ describe('tests for sample express functions app', () => {
     );
     expect(res.status).toBe(200);
     expect(res.headers['access-control-allow-origin']).toBe('*');
+  });
+  it('gets hello', async () => {
+    const modules = import.meta.glob('../functions/**/*.js', {
+      import: 'onRequest',
+      eager: true,
+    });
+    const app = createApp(modules);
+    const res = await request(app).get(
+      '/hello'
+    );
+    expect(res.status).toBe(200);
   });
 });
