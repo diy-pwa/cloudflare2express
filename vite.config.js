@@ -19,7 +19,7 @@ export default defineConfig({
             },
         },
         rollupOptions: {
-            external: [...builtinModules, ...builtinModules.map((m) => `node:${m}`)],
+            external: ["express", ...builtinModules, ...builtinModules.map((m) => `node:${m}`)],
           }      
     }
 })
